@@ -48,9 +48,9 @@ export default {
 <style >
 .add-fee-container {
     position: relative;
-    right: -28px;
 
-    width: 100px;
+
+    width: 150px;
     height: 22px;
 
     display: flex;
@@ -60,7 +60,7 @@ export default {
 
     color: var(--border-light);
 
-    z-index: 0;
+    z-index: 1;
 }
 
 .add-fee-container:hover .add-fee {

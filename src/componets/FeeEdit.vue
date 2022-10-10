@@ -1,29 +1,20 @@
 <template>
     <div id="FeeEdit">
-        <div class="fee-container">
+        <div class="fee-container" v-show="isPending">
             <div class="fee-image fee-image--border">
-
                 <add-fee v-show="showAdd()" :index="id" />
-
-
             </div>
-
             <input ref="inpTitle" type="text" class="title-fee-input" :value="props.name" />
-
             <input type="text" class="price-fee-input" v-model="precio" />
-
             <div class="edit-porcentage-container">
 
                 <a @click="less">
                     <uil-minus class="icon" />
                 </a>
-
-                <p ref="percentageText">{{a}}%</p>
-
+                <p ref="percentageText">{{calculatedPercentage}}%</p>
                 <a @click="plus">
                     <uil-plus class="icon" />
                 </a>
-
 
             </div>
 
@@ -31,6 +22,24 @@
                 <p>Vence</p>
                 <input type="date" class="date-fee-input" :value="props.date" />
             </div>
+        </div>
+
+
+
+        <div class="fee-container" v-show="!isPending">
+            <div class="fee-image fee-image--border fee-image--pagado ">
+
+                <UilAward class="fee-image-icon" />
+                <add-fee v-show="showAdd()" :index="id" />
+
+
+            </div>
+
+            <p class="title-fee">{{props.name}}</p>
+
+            <p class="price-fee"><span>{{props.price}} {{currency}}</span> ({{props.percentage}}%)</p>
+
+            <p class="date-fee date-fee--pagado">Pagado {{props.date}}</p>
 
 
         </div>
@@ -41,7 +50,7 @@
   
 <script>
 import AddFee from './AddFee.vue'
-import { UilPlus, UilMinus } from '@iconscout/vue-unicons'
+import { UilPlus, UilMinus, UilAward } from '@iconscout/vue-unicons'
 
 import feesData from "../utility/feesData"
 
@@ -58,6 +67,7 @@ export default {
             percentage: this.props.percentage,
             precio: this.props.price,
             total: total,
+            isPending: this.props.isPending
 
         }
     },
@@ -72,7 +82,8 @@ export default {
     components: {
         AddFee,
         UilPlus,
-        UilMinus
+        UilMinus,
+        UilAward,
 
     },
     methods: {
@@ -108,7 +119,7 @@ export default {
 
     },
     computed: {
-        a: function () {
+        calculatedPercentage: function () {
             return ((this.precio / this.total) * 100).toFixed(0)
         }
     }
@@ -128,21 +139,35 @@ export default {
 
 
 
-.fee-edit-container .fee-image {
+.fee-image {
 
     height: 28px;
     width: 28px;
+
+    display: flex;
 
 
     border-radius: 100%;
     background-color: hsl(214, 0%, 90%);
     margin-bottom: 4px;
 
-    z-index: 1;
+    z-index: 2;
+}
+
+.fee-image-icon {
+    color: #53b697;
+    font-size: 2rem;
+    margin: 2px;
 }
 
 .fee-image--border {
     border: 2px solid var(--first-color);
+    background-color: hsl(214, 0%, 90%);
+
+}
+
+.fee-image--pagado {
+    border: 2px solid #53b697;
     background-color: hsl(214, 0%, 90%);
 
 }
@@ -214,6 +239,10 @@ export default {
 .date-fee-input {
 
     border: none;
+}
+
+.date-fee--pagado {
+    color: #53b697;
 }
 
 .price-fee-input span {

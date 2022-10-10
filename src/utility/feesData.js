@@ -11,7 +11,7 @@ const feesData = () => {
         price: 0,
         date: "2022-06-15",
         percentage: 0,
-        isPending: true,
+        isPending: false,
 
     },
     {
@@ -59,16 +59,22 @@ const feesData = () => {
         fees.splice(index.value, 0, newFee)
 
         if (index.value - 1 < fees.length) {
-            fees[index.value].price = fees[index.value - 1].price / 2
-            fees[index.value - 1].price = fees[index.value - 1].price / 2
 
+            if (fees[index.value - 1].isPending) {
+                fees[index.value].price = fees[index.value - 1].price / 2
+                fees[index.value - 1].price = fees[index.value - 1].price / 2
+            } else {
+                fees[index.value].price = fees[index.value + 1].price / 2
+                fees[index.value + 1].price = fees[index.value + 1].price / 2
+
+            }
+
+            console.log(index.value)
         }
 
-        calculatePorcentge();
-        fees.map(item => {
-            item.price = (total / fees.length).toFixed(1);
 
-        })
+        calculatePorcentge();
+
 
     }
 
