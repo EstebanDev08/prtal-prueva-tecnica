@@ -21,6 +21,8 @@ export default {
     data() {
         return {
             showAdd: true,
+
+
         }
     },
 
@@ -32,27 +34,14 @@ export default {
     props: [
         "feeItems",
         "currency"
-    ]
+    ],
+
 
 
 }
 </script>
   
 <style >
-.fees-container {
-    margin-top: 12px;
-    padding: 16px;
 
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-
-
-    height: 140px;
-
-    display: flex;
-
-    gap: 58px;
-}
 </style>
   

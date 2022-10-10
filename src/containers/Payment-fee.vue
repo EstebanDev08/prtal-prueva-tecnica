@@ -1,8 +1,7 @@
 <template>
     <div id="payment-fees">
         <div class="fees-container">
-            <Fee v-for="(item,i) in feeItems" :key="i" :id="i" :props="item" :currency="currency"
-                :lengthFees="feeItems.length" />
+            <Fee v-for="(item,i) in feeItems" :key="i" :id="i" :props="item" :lengthFees="feeItems.length" />
         </div>
 
     </div>
@@ -30,9 +29,7 @@ export default {
     },
     props: [
         "feeItems",
-        "currency"
-    ]
-
+    ],
 
 }
 </script>
@@ -46,11 +43,7 @@ export default {
     overflow-y: hidden;
     white-space: nowrap;
 
-
-    height: 140px;
-
     display: flex;
-
     gap: 58px;
 }
 </style>

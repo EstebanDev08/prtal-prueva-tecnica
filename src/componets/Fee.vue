@@ -3,7 +3,7 @@
         <div class="fee-container">
             <div class="fee-image fee-image--border">
 
-                <add-fee v-show="showAdd()" />
+                <add-fee v-show="showAdd()" :index="id" />
 
 
             </div>
@@ -26,6 +26,7 @@ import AddFee from './AddFee.vue'
 import { UilPen } from '@iconscout/vue-unicons'
 
 
+
 export default {
     name: 'Fee',
     data() {
@@ -36,7 +37,6 @@ export default {
     props: [
 
         "props",
-        "currency",
         "id",
         "lengthFees"
 
@@ -53,8 +53,15 @@ export default {
             } else {
                 return true
             }
-        }
-    }
+        },
+
+
+    },
+    inject: [
+        "currency",
+
+    ],
+
 
 }
 </script>

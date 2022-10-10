@@ -2,9 +2,9 @@
     <div id="AddFee">
         <div class="add-fee-container">
             <div class="line"></div>
-            <div class="add-fee" v>
+            <div class="add-fee" @click="addFee">
 
-                <Uil-Plus class="plus-icon" />
+                <Uil-Plus class=" plus-icon" />
 
             </div>
 
@@ -21,14 +21,27 @@ export default {
     name: 'AddFee',
     data() {
         return {
-            precio: 500,
+
         }
     },
+    props: [
+        "index"
+    ],
 
     components: {
         UilPlus,
 
+    },
+    inject: [
+        "createFee"
+    ],
+
+    methods: {
+        addFee() {
+            this.createFee(this.index + 1)
+        }
     }
+
 }
 </script>
   

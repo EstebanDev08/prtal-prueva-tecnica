@@ -1,18 +1,36 @@
 <template>
     <div id="FeeEdit">
-        <div class="fee-edit-container">
+        <div class="fee-container">
             <div class="fee-image fee-image--border">
 
-                <add-fee v-show="showAdd()" />
+                <add-fee v-show="showAdd()" :index="id" />
 
 
             </div>
 
-            <input type="text" class="title-fee-input" :value="props.name" />
+            <input ref="inpTitle" type="text" class="title-fee-input" :value="props.name" />
 
-            <input type="text" class="price-fee-input" :value="props.price" />
+            <input type="text" class="price-fee-input" v-model="precio" />
 
-            <input type="date" class="date-fee-input" :value="props.date" />
+            <div class="edit-porcentage-container">
+
+                <a @click="less">
+                    <uil-minus class="icon" />
+                </a>
+
+                <p ref="percentageText">{{a}}%</p>
+
+                <a @click="plus">
+                    <uil-plus class="icon" />
+                </a>
+
+
+            </div>
+
+            <div class="date-container">
+                <p>Vence</p>
+                <input type="date" class="date-fee-input" :value="props.date" />
+            </div>
 
 
         </div>
@@ -23,13 +41,23 @@
   
 <script>
 import AddFee from './AddFee.vue'
-import { UilPen } from '@iconscout/vue-unicons'
+import { UilPlus, UilMinus } from '@iconscout/vue-unicons'
+
+import feesData from "../utility/feesData"
+
+let { calculatePrice, total } = feesData();
+
+
 
 
 export default {
     name: 'FeeEdit',
     data() {
         return {
+            calculatePrice: calculatePrice,
+            percentage: this.props.percentage,
+            precio: this.props.price,
+            total: total,
 
         }
     },
@@ -43,7 +71,9 @@ export default {
     ],
     components: {
         AddFee,
-        UilPen
+        UilPlus,
+        UilMinus
+
     },
     methods: {
         showAdd() {
@@ -53,6 +83,33 @@ export default {
             } else {
                 return true
             }
+        },
+
+        //aumenta el procentaje
+        plus() {
+
+            if ((Number(this.precio) < this.total)) {
+                const cantPercentagePlus = 0.01;
+
+                this.precio = Number((Number(this.precio) + (this.total * cantPercentagePlus)).toFixed(1));
+            }
+
+        },
+
+        less() {
+            const cantPercentagePlus = 0.01;
+
+            this.precio = Number((Number(this.precio) - (this.total * cantPercentagePlus)).toFixed(1));
+
+        }
+
+
+
+
+    },
+    computed: {
+        a: function () {
+            return ((this.precio / this.total) * 100).toFixed(0)
         }
     }
 
@@ -60,8 +117,8 @@ export default {
 </script>
   
 <style >
-.fee-edit-container {
-    width: 74px;
+.fee-container {
+    width: 82px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,7 +128,7 @@ export default {
 
 
 
-.fee-image {
+.fee-edit-container .fee-image {
 
     height: 28px;
     width: 28px;
@@ -79,6 +136,7 @@ export default {
 
     border-radius: 100%;
     background-color: hsl(214, 0%, 90%);
+    margin-bottom: 4px;
 
     z-index: 1;
 }
@@ -86,7 +144,50 @@ export default {
 .fee-image--border {
     border: 2px solid var(--first-color);
     background-color: hsl(214, 0%, 90%);
-    transition: .1s;
+
+}
+
+.edit-porcentage-container {
+    width: 100%;
+    height: 17px;
+
+    margin: 4px 0;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+
+.edit-porcentage-container .icon {
+
+    margin: auto;
+
+    background-color: hsl(214, 41%, 93%);
+    border-radius: 100%;
+    border: 1px solid var(--first-color);
+    color: var(--first-color);
+    font-size: var(--small-font-size);
+}
+
+.edit-porcentage-container p {
+    font-size: var(--smaller-font-size);
+}
+
+.date-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 4px;
+}
+
+.date-container p {
+    font-size: 1rem;
+    height: 12px;
+    color: var();
 }
 
 .title-fee-input {
@@ -97,12 +198,17 @@ export default {
 }
 
 .title-fee-input,
-.price-fee-input,
-.date-fee-input {
+.price-fee-input {
     font-size: var(--smaller-font-size);
     outline: none;
     width: 100%;
     margin: 2px 0;
+}
+
+.date-fee-input {
+    font-size: var(--smaller-font-size);
+    outline: none;
+    width: 100%;
 }
 
 .date-fee-input {

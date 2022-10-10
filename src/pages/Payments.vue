@@ -1,8 +1,9 @@
 <template>
     <div id="payments">
-        <Payment-header :total="total" :currency="currency" />
-        <Payment-fees :feeItems="payments" :currency="currency" v-if="!isEditing" />
-        <PaymentFeeEdit :feeItems="payments" :currency="currency" v-if="!isEditing" />
+        <Payment-header @changeIsEditing="changeStateEditing" :total="total" :currency="currency"
+            :isEditing="isEditing" />
+        <Payment-fees :feeItems="payments" v-if="!isEditing" />
+        <PaymentFeeEdit :feeItems=" payments" :currency="currency" v-if="isEditing" />
 
     </div>
 </template>
@@ -17,55 +18,24 @@ let currency = 'UF';
 
 
 // aqui se consultaria el api, para obtener la informacion  de los pagos
+import feesData from "../utility/feesData"
 
-const total = 182;
-let payments = [{
-    name: "Anticipo",
-    price: 0,
-    date: "2022-06-15",
-    percentage: 0,
-    isPending: true,
-
-},
-{
-    name: "Pago 1",
-    price: 0,
-    date: "2022-07-15",
-    percentage: 0,
-    isPending: true,
-},
-{
-    name: "Pago 2",
-    price: 0,
-    date: "2022-08-15",
-    percentage: 0,
-    isPending: true,
-}]
+const { fees, total, createFee } = feesData();
 
 
-payments.map(item => {
-    item.price = (total / payments.length).toFixed(1);
 
-})
-
-payments.map(item => {
-    item.percentage = (item.price / total * 100).toFixed(0)
-
-})
-
-const a = new Date(2022, 10, 2).toDateString();
-console.log(a)
-const isEditing = false
+const edit = false
 
 
 export default {
     name: 'payments',
     data() {
         return {
-            payments: payments,
+            payments: fees,
             total: total,
             currency: currency,
-            isEditing: isEditing
+            isEditing: edit,
+
 
 
         }
@@ -74,6 +44,17 @@ export default {
         PaymentHeader,
         PaymentFees,
         PaymentFeeEdit
+    },
+    provide() {
+        return {
+            currency: this.currency,
+            createFee: createFee,
+        }
+    },
+    methods: {
+        changeStateEditing(value) {
+            this.isEditing = value
+        }
     }
 }
 </script>

@@ -6,9 +6,13 @@
                 <Uil-AngleDown />
             </div>
             <div class="info-container">
-                <div class="edit-header">
+                <div class="edit-header" v-show="!stateEditing" @click="toggleStateEditing">
                     <p>Editar</p>
                     <Uil-Pen />
+                </div>
+
+                <div class="guardar-header" v-show="stateEditing" @click="toggleStateEditing">
+                    <p>Guardar</p>
                 </div>
                 <div class="info-header">
                     <p>Por cobrar</p>
@@ -30,7 +34,7 @@ export default {
     name: 'payment-header',
     data() {
         return {
-
+            stateEditing: this.isEditing
 
         }
     },
@@ -40,8 +44,20 @@ export default {
     },
     props: [
         "total",
-        "currency"
-    ]
+        "currency",
+        "isEditing"
+    ],
+    methods: {
+
+        toggleStateEditing() {
+
+            this.stateEditing = !this.stateEditing
+
+            this.$emit("changeIsEditing", this.stateEditing)
+        }
+
+    },
+
 }
 </script>
   
@@ -74,8 +90,10 @@ export default {
     font-weight: bold;
 }
 
-.edit-header {
+.edit-header,
+.guardar-header {
     margin-right: 16px;
+    cursor: pointer;
 }
 
 .edit-header p {
@@ -89,6 +107,17 @@ export default {
 
     color: var(--text-color-light);
     font-size: var(--small-font-size);
+}
+
+.guardar-header {
+
+    background-color: var(--first-color);
+    border-radius: 5px;
+    color: white;
+    font-size: var(--smaller-font-size);
+    padding: 4px;
+
+
 }
 
 .total-info {
